@@ -6,9 +6,10 @@ import {
 } from '@nestjs/websockets';
 import {
   UnauthorizedException,
+  UseGuards
 } from '@nestjs/common';
 import type { Socket } from 'socket.io';
-
+import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
 import { HomeService } from './home.service.js';
 import { CreateDto } from './dto/create_dto.js';
 import { auth } from '../lib/auth.js';
@@ -20,6 +21,7 @@ export class HomeGateway {
   ) {}
 
   @SubscribeMessage('displays_prompt')
+  @UseGuards(AuthGuard)
   async userInput(
     @MessageBody() prompt: CreateDto,
     @ConnectedSocket() client: Socket,

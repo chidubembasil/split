@@ -5,13 +5,16 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 import { Currency } from '../../generated/prisma/enums.js';
 
 export class UpdateProfileDto {
+    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     name?: string;
 
+    @ApiProperty({ required: false })
     @IsOptional()
     @IsString()
     image?: string;

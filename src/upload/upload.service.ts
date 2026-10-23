@@ -151,7 +151,7 @@ export class UploadService {
   
 
   async update(id: string, dto: UpdateUploadDto, files: Express.Multer.File[], userId: string, profileId: string,) {
-     
+      
     //upload to cloudinary
     const media = await Promise.all(
       files.map((file)=> this.cloud.uploadMedia(file, 'media'))
@@ -167,23 +167,26 @@ export class UploadService {
         throw new BadRequestException('Set a currency on your account before uploading');
       }
 
+      const updateData: any = {
+        currency: owner.currency,
+        filename: files.map((f) => f.originalname),
+        fileType: files.map((f) => f.mimetype),
+        fileSize: media.map((m) => String(m.bytes)),
+        fileurl:  media.map((m) => m.url),
+        publicIds: media.map((m) => m.publicId),
+        resourceTypes: media.map((m) => m.resourceType),
+        userId,
+        profileId,
+      };
+
+      if ((dto as any).name !== undefined) updateData.name = (dto as any).name;
+      if ((dto as any).description !== undefined) updateData.description = (dto as any).description;
+      if ((dto as any).price !== undefined) updateData.price = (dto as any).price;
+      if ((dto as any).quantity !== undefined) updateData.quantity = (dto as any).quantity;
+
       return await this.db.upload.update({
         where:{id},
-        data:{
-          name: dto.name,
-          description: dto.description,
-          price: dto.price,
-          quantity: dto.quantity,
-          currency: owner.currency,
-          filename: files.map((f) => f.originalname),
-          fileType: files.map((f) => f.mimetype),
-          fileSize: media.map((m) => String(m.bytes)),
-          fileurl:  media.map((m) => m.url),
-          publicIds: media.map((m) => m.publicId),
-          resourceTypes: media.map((m) => m.resourceType),
-          userId,
-          profileId,
-        }
+        data:updateData
       })
     }catch(error){
       // Don't leave orphaned files on Cloudinary if the DB save fails

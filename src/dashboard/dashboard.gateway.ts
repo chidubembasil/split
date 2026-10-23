@@ -4,17 +4,19 @@ import {
   MessageBody,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { UnauthorizedException } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import type { Socket } from 'socket.io';
 import { DashboardService } from './dashboard.service.js';
 import { CreateDashboardDto } from './dto/create-dashboard.dto.js';
 import { auth } from '../lib/auth.js';
+import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
 
 @WebSocketGateway()
 export class DashboardGateway {
   constructor(private readonly dashboardService: DashboardService) {}
 
   @SubscribeMessage('createDashboard')
+  @UseGuards(AuthGuard)
   async create(
     @MessageBody() prompt: CreateDashboardDto,
     @ConnectedSocket() client: Socket,
