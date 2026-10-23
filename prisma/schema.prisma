@@ -1,0 +1,173 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Currency {
+  NAIRA
+  DOLLAR
+  POUNDS
+  EURO
+  CANADIAN_DOLLAR
+  CEDIS
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+}
+
+model Profile {
+  id            String      @id @default(uuid())
+  user          User?        
+  upload        Upload[]
+}
+
+
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  currency      Currency? @default(NAIRA)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  upload        Upload[]
+  store         Store[]
+
+  profileId        String     @unique
+  profile          Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+//Store
+model Store {
+  id            String      @id @default(uuid())
+  publicId      String?
+  name          String
+  description   String
+  accountName   String
+  accountNumber String
+  bank          String
+  order         Order[]
+  upload        Upload[]
+  rules         String[]    //These are the rules the user gives the agent to abide
+  userId        String      @unique
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime    @default(now())
+}
+
+
+///upload///
+model Upload{
+  id                String      @id @default(uuid())
+  name              String[]
+  description       String
+  price             String[]
+  negotiatedPrice   String[]
+  quantity          Int
+  currency          Currency
+  filename          String[]
+  fileType          String[]
+  fileSize          String[]
+  fileurl           String[]
+  publicIds         String[]
+  resourceTypes     String[]
+
+  userId            String
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  profileId         String
+  profile           Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  storeId           String
+  store             Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+/// Order ///
+model Order {
+  id              String      @id @default(cuid())
+  CustomerName    String
+  customerPhone   String
+  deliveryAddress String
+  totalAmount     Int
+  status          OrderStatus @default(PENDING)
+
+  items           OrderItem[]
+  storeId         String      // NEW: which store (and so which seller) owns this order
+  store           Store       @relation(fields: [storeId], references: [id], onDelete: Cascade) // NEW
+
+
+  createdAt       DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  productId String
+  quantity  Int
+  price     Int
+
+  orderId   String
+  order     Order  @relation(fields: [orderId], references: [id])
+}
