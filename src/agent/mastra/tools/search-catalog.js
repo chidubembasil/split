@@ -1,6 +1,6 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
-import { Currency } from "../../../src/generated/prisma/enums.js";
+import { Currency } from "../../../generated/prisma/enums.js";
 export function SearchCatalogFunction(catalog) {
     return createTool({
         id: "catalog-tool",

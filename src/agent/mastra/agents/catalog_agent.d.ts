@@ -1,5 +1,5 @@
 import { Agent } from "@mastra/core/agent";
-import type { UploadService } from "../../../src/upload/upload.service.js";
+import type { UploadService } from "../../../upload/upload.service.js";
 type UploadFiles = Parameters<UploadService["create"]>[1];
 export declare function CatalogAgent(catalog: UploadService, userId: string, profileId: string, files?: UploadFiles): Agent<"catalog-agent", {
     readCatalog: import("@mastra/core/tools").Tool<{

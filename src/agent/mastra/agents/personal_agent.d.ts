@@ -1,5 +1,5 @@
 import { Agent } from "@mastra/core/agent";
-import type { UploadService } from "../../../src/upload/upload.service.js";
+import type { UploadService } from "../../../upload/upload.service.js";
 type UploadFiles = Parameters<UploadService["create"]>[1];
 type PersonalAgentDependencies = {
     catalog: UploadService;

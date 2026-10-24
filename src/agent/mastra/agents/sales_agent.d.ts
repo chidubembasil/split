@@ -1,5 +1,5 @@
 import { Agent } from "@mastra/core/agent";
-import type { OrdersService } from "../../../src/order/order.service.js";
+import type { OrdersService } from "../../../order/order.service.js";
 export declare function createSalesAgent(orders: OrdersService, storeId: string): Agent<"sales_agent", {
     orderTool: import("@mastra/core/tools").Tool<{
         items: {
