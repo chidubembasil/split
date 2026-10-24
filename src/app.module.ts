@@ -10,8 +10,6 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module.js';
 import { RedisModule } from './redis/redis.module.js';
 import { ConfigModule } from '@nestjs/config';
 import { OrderModule } from './order/order.module.js';
-import { MastraModule } from "@mastra/nestjs"
-import { mastra } from "./agent/mastra/index.js"
 import { StoreContextModule } from './store-context/store-context.module.js';
 import { StoreModule } from './store/store.module.js';
 import { GenerateUrlModule } from './generate-url/generate-url.module.js';
@@ -21,9 +19,7 @@ import { GenerateUrlModule } from './generate-url/generate-url.module.js';
     AuthModule, HomeModule, 
     ConfigModule.forRoot({ isGlobal: true }), DashboardModule, UploadModule, 
     DatabaseModule, CloudinaryModule, RedisModule, OrderModule, 
-    MastraModule.register({
-      mastra,
-    }), StoreContextModule, StoreModule, GenerateUrlModule
+    StoreContextModule, StoreModule, GenerateUrlModule
   ],
   controllers: [AppController],
   providers: [AppService],
