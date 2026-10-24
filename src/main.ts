@@ -4,7 +4,7 @@ import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-async function bootstrap() {
+export async function createApp() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -32,6 +32,10 @@ async function bootstrap() {
     credentials: true, // only if you use cookies; not needed for Bearer tokens
     maxAge: 86400,
   });
+  return app;
+}
+
+if (!process.env.VERCEL) {
+  const app = await createApp();
   await app.listen(process.env.PORT ?? 3000);
 }
-await bootstrap();
