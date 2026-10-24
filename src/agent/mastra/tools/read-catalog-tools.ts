@@ -1,6 +1,6 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
-import type { UploadService } from "../../../upload/upload.service.js";
+import type { UploadService } from  "../../../upload/upload.service.js";
 import { Currency } from "../../../generated/prisma/enums.js";
 
 export function ReadCatalogFunction(catalog: UploadService) {
