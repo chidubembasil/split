@@ -1,0 +1,5 @@
+if (Test-Path .\vercel.json) {
+    Get-Content .\vercel.json
+} else {
+    Write-Output "No vercel.json found"
+}

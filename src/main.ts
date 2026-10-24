@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module.js';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { DashboardModule } from './dashboard/dashboard.module.js';
+import { HomeModule } from './home/home.module.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,11 +15,13 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Split API')
-    .setDescription('Split API documentation')
+    .setDescription('Split API documentation - Dashboard and Home only')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    include: [HomeModule, DashboardModule],
+  });
   SwaggerModule.setup('api', app, document);
 
   app.enableCors({

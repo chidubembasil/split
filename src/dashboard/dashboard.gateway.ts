@@ -10,11 +10,17 @@ import { DashboardService } from './dashboard.service.js';
 import { CreateDashboardDto } from './dto/create-dashboard.dto.js';
 import { auth } from '../lib/auth.js';
 import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Store')
+@ApiBearerAuth()
 @WebSocketGateway()
 export class DashboardGateway {
   constructor(private readonly dashboardService: DashboardService) {}
 
+
+  @ApiOperation({ summary: 'Chat With A Customer Care  Agent' })
   @SubscribeMessage('createDashboard')
   @UseGuards(AuthGuard)
   async create(

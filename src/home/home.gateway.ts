@@ -13,13 +13,19 @@ import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
 import { HomeService } from './home.service.js';
 import { CreateDto } from './dto/create_dto.js';
 import { auth } from '../lib/auth.js';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+
+@ApiTags('Store')
+@ApiBearerAuth()
 @WebSocketGateway()
 export class HomeGateway {
   constructor(
     private readonly homeService: HomeService,
   ) {}
 
+
+  @ApiOperation({ summary: 'Chat With Your Personal Agent' })
   @SubscribeMessage('displays_prompt')
   @UseGuards(AuthGuard)
   async userInput(
