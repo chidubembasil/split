@@ -8,7 +8,6 @@ import {
   SensitiveDataFilter,
 } from '@mastra/observability';
 
-const hasTurso = Boolean(process.env.TURSO_DATABASE_URL);
 
 export const mastra = new Mastra({
   
