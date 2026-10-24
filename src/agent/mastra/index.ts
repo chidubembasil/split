@@ -11,14 +11,21 @@ import {
   SensitiveDataFilter,
 } from '@mastra/observability';
 
+const hasTurso = Boolean(process.env.TURSO_DATABASE_URL);
+
 export const mastra = new Mastra({
   storage: new MastraCompositeStore({
     id: 'composite-storage',
-    default: new LibSQLStore({
-      id: 'mastra-storage',
-      url: process.env.TURSO_DATABASE_URL ?? 'file:./mastra.db',
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    }),
+    default: hasTurso
+      ? new LibSQLStore({
+          id: 'mastra-storage',
+          url: process.env.TURSO_DATABASE_URL as string,
+          authToken: process.env.TURSO_AUTH_TOKEN,
+        })
+      : new LibSQLStore({
+          id: 'mastra-storage',
+          url: ':memory:',
+        }),
     domains: {
       observability: await new DuckDBStore().getStore('observability'),
     },
