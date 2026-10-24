@@ -1,9 +1,6 @@
 
 import { Mastra } from '@mastra/core/mastra';
 import { PinoLogger } from '@mastra/loggers';
-import { LibSQLStore } from '@mastra/libsql';
-import { DuckDBStore } from '@mastra/duckdb';
-import { MastraCompositeStore } from '@mastra/core/storage';
 import {
   Observability,
   MastraStorageExporter,
@@ -14,22 +11,7 @@ import {
 const hasTurso = Boolean(process.env.TURSO_DATABASE_URL);
 
 export const mastra = new Mastra({
-  storage: new MastraCompositeStore({
-    id: 'composite-storage',
-    default: hasTurso
-      ? new LibSQLStore({
-          id: 'mastra-storage',
-          url: process.env.TURSO_DATABASE_URL as string,
-          authToken: process.env.TURSO_AUTH_TOKEN,
-        })
-      : new LibSQLStore({
-          id: 'mastra-storage',
-          url: ':memory:',
-        }),
-    domains: {
-      observability: await new DuckDBStore().getStore('observability'),
-    },
-  }),
+  
 
   logger: new PinoLogger({
     name: 'Mastra',
