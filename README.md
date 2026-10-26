@@ -25,6 +25,79 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## API Routes
+
+All routes are prefixed with the server origin (default `http://localhost:3000`) and use JSON unless noted as `multipart/form-data`. Routes marked **Auth** require a valid Better Auth session (sent as the session cookie/header); requests without one receive `401 Unauthorized`. Interactive documentation is available at `/api` (Swagger UI).
+
+### App
+
+| Method | Route | Auth | Description |
+| --- | --- | --- | --- |
+| GET | `/` | No | Health check. Returns a simple greeting from `AppService`. |
+
+### Auth (`/auth`)
+
+| Method | Route | Auth | Description |
+| --- | --- | --- | --- |
+| GET | `/auth` | Yes | List all users (`name`, `email`, `image`). |
+| GET | `/auth/:id` | Yes | Get a single user by ID (`name`, `email`, `image`). Returns `404` if not found. |
+| GET | `/auth/profile/:id` | Yes | Get a profile by profile ID, including its user and uploads (catalog items). |
+| POST | `/auth/signup` | No | Create an account. Body: `name` (min 3 chars), `email`, `password` (6-20 chars), optional `rememberMe`. Returns `201 Created`. |
+| POST | `/auth/signin` | No | Sign in with email and password. Body: `email`, `password`, optional `rememberMe`. Returns `200 OK`. |
+| POST | `/auth/logout` | Yes | Sign the current user out and set the session-clearing `Set-Cookie` header. |
+| PUT | `/auth/:id` | Yes | Update a profile (the `:id` is the profile ID). Optional body: `name`, `image`, `uploadName`, `description`, `price`, `currency`. User fields and upload fields are updated in a transaction. |
+| DELETE | `/auth/:id` | Yes | Delete a user by ID. Returns `204 No Content` on success. |
+
+### Store (`/store`)
+
+Every route requires **Auth** and only operates on stores owned by the current user.
+
+| Method | Route | Description |
+| --- | --- | --- |
+| POST | `/store` | Create a store for the current user. Body: `name`, `description`, `accountName`, `accountNumber`, `bank`, `rules` (string array). Returns `409` if the user already has a store. |
+| GET | `/store` | List the current user's stores, sorted by name. |
+| GET | `/store/:id` | Get one of the current user's stores by ID. Returns `404` if not found or not owned. |
+| PUT | `/store/:id` | Update a store. Body accepts any subset of the create fields. |
+| DELETE | `/store/:id` | Delete a store. Returns `{ "deleted": true }`. |
+
+### Upload (`/upload`)
+
+Catalog items. Every route requires **Auth**. Create/update use `multipart/form-data`.
+
+| Method | Route | Description |
+| --- | --- | --- |
+| POST | `/upload` | Upload 1-10 files in the `files` field and create a catalog item. Body: `name` (string array), `price` (string array), `description`, `quantity`. Requires the user to have a currency set and a store created; files are uploaded to Cloudinary, then the DB record is created. Returns `400` if those prerequisites are missing. |
+| GET | `/upload/:id` | Get a catalog item by ID (`name`, `description`, `price`, `currency`, `fileurl`, timestamps). Cached in Redis for 60 seconds. Returns `404` if not found. |
+| PUT | `/upload/:id` | Replace the item's files (1-10 `files`) and optionally update `name`, `description`, `price`, `quantity`. Requires the user to have a currency set. |
+| DELETE | `/upload/:id` | Delete a catalog item by ID. Returns `204 No Content`. |
+
+### Media (`/media`)
+
+Direct Cloudinary media management. Every route requires **Auth**.
+
+| Method | Route | Description |
+| --- | --- | --- |
+| POST | `/media/upload` | Upload a single file in the `file` field (`multipart/form-data`). Images up to 10 MB, videos up to 100 MB; allowed types: JPEG, PNG, WebP, GIF, MP4, MOV, WebM. Returns the URL, public ID, format, dimensions/duration, and a thumbnail URL for videos. |
+| POST | `/media/upload-many` | Upload up to 10 files in the `files` field (`multipart/form-data`). Returns an array of uploaded media. |
+| DELETE | `/media` | Delete media from Cloudinary. Body: `publicId` and `resourceType` (`image` or `video`). |
+
+### Generate URL (`/generate-url`)
+
+| Method | Route | Auth | Description |
+| --- | --- | --- | --- |
+| POST | `/generate-url/generate-url` | Yes | Generate (or reuse) the public storefront URL for the current user's store. Requires `STOREFRONT_BASE_URL` to be configured and the user to have a store. Returns `storeId`, `publicId`, and `url`. |
+
+### WebSocket events
+
+Connect with Socket.IO and the same Better Auth session. The handshake headers are used to resolve the session; unauthenticated connections are rejected with `401 Unauthorized`.
+
+| Event | Payload | Description |
+| --- | --- | --- |
+| `displays_prompt` | `{ prompt: string }` | Chat with the user's personal AI agent, which can manage their catalog and store via Mastra tools. |
+| `createDashboard` | `{ prompt: string }` | Chat with the customer-care agent for the user's store (order-related assistance). Requires the user to have a store. |
+
+> The `order`, `store-context`, and `database` modules currently register controllers but expose no HTTP routes.
+
 ## Project setup
 
 ```bash
