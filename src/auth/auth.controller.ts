@@ -20,6 +20,12 @@ export class AuthController {
   getAllUsers(){
     return this.authService.getAllUsers()
   }
+
+  @ApiOperation({ summary: 'Get current session' })
+  @Get('session')
+  getSession(@Req() req: Request){
+    return this.authService.getSession(req)
+  }
   
   @ApiOperation({ summary: 'Get user by id' })
   @ApiBearerAuth()
@@ -39,15 +45,21 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Sign up' })
   @Post('signup')
-  signup(@Body() data: CreateDto) {
-    return this.authService.signup(data);
+  signup(
+    @Body() data: CreateDto,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    return this.authService.signup(data, res);
   }
 
   @ApiOperation({ summary: 'Sign in' })
   @Post('signin')
   @HttpCode(HttpStatus.OK)
-  signIn(@Body() data: SignInDto) {
-    return this.authService.signIn(data);
+  signIn(
+    @Body() data: SignInDto,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    return this.authService.signIn(data, res);
   }
 
   @ApiOperation({ summary: 'Logout' })

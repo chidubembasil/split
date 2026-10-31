@@ -210,44 +210,71 @@ export class AuthService {
 
 
     ////// SIGN-UP //////
-    async signup (data: CreateDto){
-        const createData = await auth.api.signUpEmail({
+    async signup (data: CreateDto, res: Response){
+        const response = await auth.api.signUpEmail({
             body:{
                 name : data.name,
                 email: data.email,
                 password: data.password,
                 rememberMe: data.rememberMe,
                 callbackURL: "www.google.com"
-            }
+            },
+            asResponse: true,
         })
 
-        if(!createData){
-            return new HttpException('Could not create your account', HttpStatus.BAD_REQUEST)
+        if(!response.ok){
+            const error = await response.json().catch(() => null)
+            throw new HttpException(error?.message ?? 'Could not create your account', response.status)
         }
 
-        return new HttpException('Created Successfully', HttpStatus.CREATED)
+        res.setHeader("Set-Cookie", response.headers.getSetCookie());
+
+        return { message: 'Created Successfully' }
     }
 
 
     ////// SIGN-IN //////
-    async signIn(data : SignInDto){
-        const SignIn = await auth.api.signInEmail({
+    async signIn(data : SignInDto, res: Response){
+        const response = await auth.api.signInEmail({
             body: {
                 email: data.email, 
                 password: data.password, 
                 rememberMe: data.rememberMe, 
                 callbackURL: "https://example.com/callback",
             },
+            asResponse: true,
         })
 
-        if(!SignIn){
-            return new HttpException('Could not SignIn your account', HttpStatus.BAD_REQUEST)
+        if(!response.ok){
+            const error = await response.json().catch(() => null)
+            throw new HttpException(error?.message ?? 'Could not SignIn your account', response.status)
         }
 
-        return new HttpException('Signed In Successfully', HttpStatus.ACCEPTED)
+        res.setHeader("Set-Cookie", response.headers.getSetCookie());
+
+        return { message: 'Signed In Successfully' }
     }
 
 
+    ////// GET-SESSION //////
+    async getSession(req: Request) {
+        const session = await auth.api.getSession({
+            headers: fromNodeHeaders(req.headers),
+        })
+
+        if(!session){
+            return { user: null }
+        }
+
+        return {
+            user: {
+                id: session.user.id,
+                name: session.user.name,
+                email: session.user.email,
+                image: session.user.image,
+            },
+        }
+    }
 
 
     ////// LOGOUT //////
