@@ -33,7 +33,6 @@ export type UserMinAggregateOutputType = {
   currency: $Enums.Currency | null
   createdAt: Date | null
   updatedAt: Date | null
-  profileId: string | null
 }
 
 export type UserMaxAggregateOutputType = {
@@ -45,7 +44,6 @@ export type UserMaxAggregateOutputType = {
   currency: $Enums.Currency | null
   createdAt: Date | null
   updatedAt: Date | null
-  profileId: string | null
 }
 
 export type UserCountAggregateOutputType = {
@@ -57,7 +55,6 @@ export type UserCountAggregateOutputType = {
   currency: number
   createdAt: number
   updatedAt: number
-  profileId: number
   _all: number
 }
 
@@ -71,7 +68,6 @@ export type UserMinAggregateInputType = {
   currency?: true
   createdAt?: true
   updatedAt?: true
-  profileId?: true
 }
 
 export type UserMaxAggregateInputType = {
@@ -83,7 +79,6 @@ export type UserMaxAggregateInputType = {
   currency?: true
   createdAt?: true
   updatedAt?: true
-  profileId?: true
 }
 
 export type UserCountAggregateInputType = {
@@ -95,7 +90,6 @@ export type UserCountAggregateInputType = {
   currency?: true
   createdAt?: true
   updatedAt?: true
-  profileId?: true
   _all?: true
 }
 
@@ -180,7 +174,6 @@ export type UserGroupByOutputType = {
   currency: $Enums.Currency | null
   createdAt: Date
   updatedAt: Date
-  profileId: string
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
   _max: UserMaxAggregateOutputType | null
@@ -213,12 +206,11 @@ export type UserWhereInput = {
   currency?: Prisma.EnumCurrencyNullableFilter<"User"> | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
-  profileId?: Prisma.StringFilter<"User"> | string
   sessions?: Prisma.SessionListRelationFilter
   accounts?: Prisma.AccountListRelationFilter
   upload?: Prisma.UploadListRelationFilter
   store?: Prisma.StoreListRelationFilter
-  profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
+  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
 }
 
 export type UserOrderByWithRelationInput = {
@@ -230,7 +222,6 @@ export type UserOrderByWithRelationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  profileId?: Prisma.SortOrder
   sessions?: Prisma.SessionOrderByRelationAggregateInput
   accounts?: Prisma.AccountOrderByRelationAggregateInput
   upload?: Prisma.UploadOrderByRelationAggregateInput
@@ -241,7 +232,6 @@ export type UserOrderByWithRelationInput = {
 export type UserWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   email?: string
-  profileId?: string
   AND?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   OR?: Prisma.UserWhereInput[]
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
@@ -255,8 +245,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   accounts?: Prisma.AccountListRelationFilter
   upload?: Prisma.UploadListRelationFilter
   store?: Prisma.StoreListRelationFilter
-  profile?: Prisma.XOR<Prisma.ProfileScalarRelationFilter, Prisma.ProfileWhereInput>
-}, "id" | "profileId" | "email">
+  profile?: Prisma.XOR<Prisma.ProfileNullableScalarRelationFilter, Prisma.ProfileWhereInput> | null
+}, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -267,7 +257,6 @@ export type UserOrderByWithAggregationInput = {
   currency?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  profileId?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
   _min?: Prisma.UserMinOrderByAggregateInput
@@ -285,7 +274,6 @@ export type UserScalarWhereWithAggregatesInput = {
   currency?: Prisma.EnumCurrencyNullableWithAggregatesFilter<"User"> | $Enums.Currency | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
-  profileId?: Prisma.StringWithAggregatesFilter<"User"> | string
 }
 
 export type UserCreateInput = {
@@ -301,7 +289,7 @@ export type UserCreateInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadCreateNestedManyWithoutUserInput
   store?: Prisma.StoreCreateNestedManyWithoutUserInput
-  profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -313,11 +301,11 @@ export type UserUncheckedCreateInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadUncheckedCreateNestedManyWithoutUserInput
   store?: Prisma.StoreUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -333,7 +321,7 @@ export type UserUpdateInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -345,11 +333,11 @@ export type UserUncheckedUpdateInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUncheckedUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -361,7 +349,6 @@ export type UserCreateManyInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
 }
 
 export type UserUpdateManyMutationInput = {
@@ -384,12 +371,11 @@ export type UserUncheckedUpdateManyInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type UserNullableScalarRelationFilter = {
-  is?: Prisma.UserWhereInput | null
-  isNot?: Prisma.UserWhereInput | null
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -401,7 +387,6 @@ export type UserCountOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  profileId?: Prisma.SortOrder
 }
 
 export type UserMaxOrderByAggregateInput = {
@@ -413,7 +398,6 @@ export type UserMaxOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  profileId?: Prisma.SortOrder
 }
 
 export type UserMinOrderByAggregateInput = {
@@ -425,12 +409,6 @@ export type UserMinOrderByAggregateInput = {
   currency?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  profileId?: Prisma.SortOrder
-}
-
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCreateNestedOneWithoutProfileInput = {
@@ -439,28 +417,10 @@ export type UserCreateNestedOneWithoutProfileInput = {
   connect?: Prisma.UserWhereUniqueInput
 }
 
-export type UserUncheckedCreateNestedOneWithoutProfileInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutProfileNestedInput = {
+export type UserUpdateOneRequiredWithoutProfileNestedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
   upsert?: Prisma.UserUpsertWithoutProfileInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
-}
-
-export type UserUncheckedUpdateOneWithoutProfileNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutProfileInput, Prisma.UserUncheckedCreateWithoutProfileInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProfileInput
-  upsert?: Prisma.UserUpsertWithoutProfileInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProfileInput, Prisma.UserUpdateWithoutProfileInput>, Prisma.UserUncheckedUpdateWithoutProfileInput>
 }
@@ -625,7 +585,7 @@ export type UserCreateWithoutSessionsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadCreateNestedManyWithoutUserInput
   store?: Prisma.StoreCreateNestedManyWithoutUserInput
-  profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -637,10 +597,10 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadUncheckedCreateNestedManyWithoutUserInput
   store?: Prisma.StoreUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -671,7 +631,7 @@ export type UserUpdateWithoutSessionsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -683,10 +643,10 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUncheckedUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -701,7 +661,7 @@ export type UserCreateWithoutAccountsInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadCreateNestedManyWithoutUserInput
   store?: Prisma.StoreCreateNestedManyWithoutUserInput
-  profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -713,10 +673,10 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadUncheckedCreateNestedManyWithoutUserInput
   store?: Prisma.StoreUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -747,7 +707,7 @@ export type UserUpdateWithoutAccountsInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -759,10 +719,10 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUncheckedUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutStoreInput = {
@@ -777,7 +737,7 @@ export type UserCreateWithoutStoreInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadCreateNestedManyWithoutUserInput
-  profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutStoreInput = {
@@ -789,10 +749,10 @@ export type UserUncheckedCreateWithoutStoreInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   upload?: Prisma.UploadUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutStoreInput = {
@@ -823,7 +783,7 @@ export type UserUpdateWithoutStoreInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutStoreInput = {
@@ -835,10 +795,10 @@ export type UserUncheckedUpdateWithoutStoreInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   upload?: Prisma.UploadUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUploadInput = {
@@ -853,7 +813,7 @@ export type UserCreateWithoutUploadInput = {
   sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   store?: Prisma.StoreCreateNestedManyWithoutUserInput
-  profile: Prisma.ProfileCreateNestedOneWithoutUserInput
+  profile?: Prisma.ProfileCreateNestedOneWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUploadInput = {
@@ -865,10 +825,10 @@ export type UserUncheckedCreateWithoutUploadInput = {
   currency?: $Enums.Currency | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  profileId: string
   sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   store?: Prisma.StoreUncheckedCreateNestedManyWithoutUserInput
+  profile?: Prisma.ProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUploadInput = {
@@ -899,7 +859,7 @@ export type UserUpdateWithoutUploadInput = {
   sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUpdateManyWithoutUserNestedInput
-  profile?: Prisma.ProfileUpdateOneRequiredWithoutUserNestedInput
+  profile?: Prisma.ProfileUpdateOneWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadInput = {
@@ -911,10 +871,10 @@ export type UserUncheckedUpdateWithoutUploadInput = {
   currency?: Prisma.NullableEnumCurrencyFieldUpdateOperationsInput | $Enums.Currency | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  profileId?: Prisma.StringFieldUpdateOperationsInput | string
   sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   store?: Prisma.StoreUncheckedUpdateManyWithoutUserNestedInput
+  profile?: Prisma.ProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 
@@ -984,12 +944,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   currency?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  profileId?: boolean
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   upload?: boolean | Prisma.User$uploadArgs<ExtArgs>
   store?: boolean | Prisma.User$storeArgs<ExtArgs>
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1002,8 +961,6 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   currency?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  profileId?: boolean
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1015,8 +972,6 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   currency?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  profileId?: boolean
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectScalar = {
@@ -1028,24 +983,19 @@ export type UserSelectScalar = {
   currency?: boolean
   createdAt?: boolean
   updatedAt?: boolean
-  profileId?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "currency" | "createdAt" | "updatedAt" | "profileId", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "currency" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | Prisma.User$sessionsArgs<ExtArgs>
   accounts?: boolean | Prisma.User$accountsArgs<ExtArgs>
   upload?: boolean | Prisma.User$uploadArgs<ExtArgs>
   store?: boolean | Prisma.User$storeArgs<ExtArgs>
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
+  profile?: boolean | Prisma.User$profileArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
-}
-export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  profile?: boolean | Prisma.ProfileDefaultArgs<ExtArgs>
-}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
@@ -1054,7 +1004,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     accounts: Prisma.$AccountPayload<ExtArgs>[]
     upload: Prisma.$UploadPayload<ExtArgs>[]
     store: Prisma.$StorePayload<ExtArgs>[]
-    profile: Prisma.$ProfilePayload<ExtArgs>
+    profile: Prisma.$ProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1065,7 +1015,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     currency: $Enums.Currency | null
     createdAt: Date
     updatedAt: Date
-    profileId: string
   }, ExtArgs["result"]["user"]>
   composites: {}
 }
@@ -1464,7 +1413,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   accounts<T extends Prisma.User$accountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   upload<T extends Prisma.User$uploadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UploadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   store<T extends Prisma.User$storeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$storeArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  profile<T extends Prisma.ProfileDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProfileDefaultArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  profile<T extends Prisma.User$profileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$profileArgs<ExtArgs>>): Prisma.Prisma__ProfileClient<runtime.Types.Result.GetResult<Prisma.$ProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1502,7 +1451,6 @@ export interface UserFieldRefs {
   readonly currency: Prisma.FieldRef<"User", 'Currency'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
-  readonly profileId: Prisma.FieldRef<"User", 'String'>
 }
     
 
@@ -1757,10 +1705,6 @@ export type UserCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    */
   data: Prisma.UserCreateManyInput | Prisma.UserCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1831,10 +1775,6 @@ export type UserUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * Limit how many Users to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1997,6 +1937,25 @@ export type User$storeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.StoreScalarFieldEnum | Prisma.StoreScalarFieldEnum[]
+}
+
+/**
+ * User.profile
+ */
+export type User$profileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Profile
+   */
+  select?: Prisma.ProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Profile
+   */
+  omit?: Prisma.ProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileInclude<ExtArgs> | null
+  where?: Prisma.ProfileWhereInput
 }
 
 /**

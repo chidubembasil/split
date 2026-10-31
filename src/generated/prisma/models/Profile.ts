@@ -26,28 +26,34 @@ export type AggregateProfile = {
 
 export type ProfileMinAggregateOutputType = {
   id: string | null
+  userId: string | null
 }
 
 export type ProfileMaxAggregateOutputType = {
   id: string | null
+  userId: string | null
 }
 
 export type ProfileCountAggregateOutputType = {
   id: number
+  userId: number
   _all: number
 }
 
 
 export type ProfileMinAggregateInputType = {
   id?: true
+  userId?: true
 }
 
 export type ProfileMaxAggregateInputType = {
   id?: true
+  userId?: true
 }
 
 export type ProfileCountAggregateInputType = {
   id?: true
+  userId?: true
   _all?: true
 }
 
@@ -125,6 +131,7 @@ export type ProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProfileGroupByOutputType = {
   id: string
+  userId: string
   _count: ProfileCountAggregateOutputType | null
   _min: ProfileMinAggregateOutputType | null
   _max: ProfileMaxAggregateOutputType | null
@@ -150,27 +157,31 @@ export type ProfileWhereInput = {
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   id?: Prisma.StringFilter<"Profile"> | string
-  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  userId?: Prisma.StringFilter<"Profile"> | string
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   upload?: Prisma.UploadListRelationFilter
 }
 
 export type ProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   upload?: Prisma.UploadOrderByRelationAggregateInput
 }
 
 export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId?: string
   AND?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
-  user?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   upload?: Prisma.UploadListRelationFilter
-}, "id">
+}, "id" | "userId">
 
 export type ProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   _count?: Prisma.ProfileCountOrderByAggregateInput
   _max?: Prisma.ProfileMaxOrderByAggregateInput
   _min?: Prisma.ProfileMinOrderByAggregateInput
@@ -181,34 +192,36 @@ export type ProfileScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProfileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProfileScalarWhereWithAggregatesInput | Prisma.ProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Profile"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"Profile"> | string
 }
 
 export type ProfileCreateInput = {
   id?: string
-  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  user: Prisma.UserCreateNestedOneWithoutProfileInput
   upload?: Prisma.UploadCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateInput = {
   id?: string
-  user?: Prisma.UserUncheckedCreateNestedOneWithoutProfileInput
+  userId: string
   upload?: Prisma.UploadUncheckedCreateNestedManyWithoutProfileInput
 }
 
 export type ProfileUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
   upload?: Prisma.UploadUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUncheckedUpdateOneWithoutProfileNestedInput
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   upload?: Prisma.UploadUncheckedUpdateManyWithoutProfileNestedInput
 }
 
 export type ProfileCreateManyInput = {
   id?: string
+  userId: string
 }
 
 export type ProfileUpdateManyMutationInput = {
@@ -217,18 +230,27 @@ export type ProfileUpdateManyMutationInput = {
 
 export type ProfileUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type ProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
 }
 
 export type ProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
+}
+
+export type ProfileNullableScalarRelationFilter = {
+  is?: Prisma.ProfileWhereInput | null
+  isNot?: Prisma.ProfileWhereInput | null
 }
 
 export type ProfileScalarRelationFilter = {
@@ -246,10 +268,28 @@ export type ProfileCreateNestedOneWithoutUserInput = {
   connect?: Prisma.ProfileWhereUniqueInput
 }
 
-export type ProfileUpdateOneRequiredWithoutUserNestedInput = {
+export type ProfileUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutUserInput, Prisma.ProfileUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutUserInput
+  connect?: Prisma.ProfileWhereUniqueInput
+}
+
+export type ProfileUpdateOneWithoutUserNestedInput = {
   create?: Prisma.XOR<Prisma.ProfileCreateWithoutUserInput, Prisma.ProfileUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutUserInput
   upsert?: Prisma.ProfileUpsertWithoutUserInput
+  disconnect?: Prisma.ProfileWhereInput | boolean
+  delete?: Prisma.ProfileWhereInput | boolean
+  connect?: Prisma.ProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutUserInput, Prisma.ProfileUpdateWithoutUserInput>, Prisma.ProfileUncheckedUpdateWithoutUserInput>
+}
+
+export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.ProfileCreateWithoutUserInput, Prisma.ProfileUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.ProfileCreateOrConnectWithoutUserInput
+  upsert?: Prisma.ProfileUpsertWithoutUserInput
+  disconnect?: Prisma.ProfileWhereInput | boolean
+  delete?: Prisma.ProfileWhereInput | boolean
   connect?: Prisma.ProfileWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutUserInput, Prisma.ProfileUpdateWithoutUserInput>, Prisma.ProfileUncheckedUpdateWithoutUserInput>
 }
@@ -306,12 +346,12 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
 
 export type ProfileCreateWithoutUploadInput = {
   id?: string
-  user?: Prisma.UserCreateNestedOneWithoutProfileInput
+  user: Prisma.UserCreateNestedOneWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateWithoutUploadInput = {
   id?: string
-  user?: Prisma.UserUncheckedCreateNestedOneWithoutProfileInput
+  userId: string
 }
 
 export type ProfileCreateOrConnectWithoutUploadInput = {
@@ -332,12 +372,12 @@ export type ProfileUpdateToOneWithWhereWithoutUploadInput = {
 
 export type ProfileUpdateWithoutUploadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUpdateOneWithoutProfileNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
 }
 
 export type ProfileUncheckedUpdateWithoutUploadInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  user?: Prisma.UserUncheckedUpdateOneWithoutProfileNestedInput
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -373,40 +413,51 @@ export type ProfileCountOutputTypeCountUploadArgs<ExtArgs extends runtime.Types.
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  user?: boolean | Prisma.Profile$userArgs<ExtArgs>
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   upload?: boolean | Prisma.Profile$uploadArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
 export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
 export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  userId?: boolean
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["profile"]>
 
 export type ProfileSelectScalar = {
   id?: boolean
+  userId?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  user?: boolean | Prisma.Profile$userArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   upload?: boolean | Prisma.Profile$uploadArgs<ExtArgs>
   _count?: boolean | Prisma.ProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type ProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type ProfileIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Profile"
   objects: {
-    user: Prisma.$UserPayload<ExtArgs> | null
+    user: Prisma.$UserPayload<ExtArgs>
     upload: Prisma.$UploadPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    userId: string
   }, ExtArgs["result"]["profile"]>
   composites: {}
 }
@@ -801,7 +852,7 @@ readonly fields: ProfileFieldRefs;
  */
 export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  user<T extends Prisma.Profile$userArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$userArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   upload<T extends Prisma.Profile$uploadArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Profile$uploadArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UploadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -833,6 +884,7 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProfileFieldRefs {
   readonly id: Prisma.FieldRef<"Profile", 'String'>
+  readonly userId: Prisma.FieldRef<"Profile", 'String'>
 }
     
 
@@ -1056,7 +1108,7 @@ export type ProfileCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   /**
    * The data needed to create a Profile.
    */
-  data?: Prisma.XOR<Prisma.ProfileCreateInput, Prisma.ProfileUncheckedCreateInput>
+  data: Prisma.XOR<Prisma.ProfileCreateInput, Prisma.ProfileUncheckedCreateInput>
 }
 
 /**
@@ -1087,6 +1139,10 @@ export type ProfileCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.ProfileCreateManyInput | Prisma.ProfileCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1157,6 +1213,10 @@ export type ProfileUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many Profiles to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1223,25 +1283,6 @@ export type ProfileDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Profiles to delete.
    */
   limit?: number
-}
-
-/**
- * Profile.user
- */
-export type Profile$userArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the User
-   */
-  select?: Prisma.UserSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the User
-   */
-  omit?: Prisma.UserOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
 }
 
 /**
