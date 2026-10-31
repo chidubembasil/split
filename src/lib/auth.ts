@@ -12,9 +12,10 @@ export const auth = betterAuth({
     databaseHooks: {
         user: {
             create: {
-                before: async (user) => {
-                    console.log("DEBUG user create payload:", JSON.stringify(user));
-                    return { data: user };
+                after: async (user) => {
+                    await prisma.profile.create({
+                        data: { userId: user.id },
+                    });
                 },
             },
         },
