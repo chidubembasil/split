@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFiles, Put, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseInterceptors, UploadedFiles, Put, UseGuards, Req, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UploadService } from './upload.service.js';
 import { CreateUploadDto } from './dto/create-upload.dto.js';
@@ -31,6 +31,14 @@ export class UploadController {
   // findAll() {
   //   return this.uploadService.findAll();
   // }
+
+  @ApiOperation({ summary: 'Search uploads' })
+  @Get('search')
+  @UseGuards(AuthGuard)
+  search(@Query('search') search: string) {
+    return this.uploadService.searchUpload(search);
+  }
+
 
   @ApiOperation({ summary: 'Get upload by id' })
   @Get(':id')
