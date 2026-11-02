@@ -23,6 +23,14 @@ export class CreateUploadDto {
     price : string[]
 
 
+    @ApiProperty({ type: [String] })
+    @Transform(toArray)
+    @IsArray()
+    @IsString({ each: true })
+    @IsNotEmpty({ each: true })
+    negotiatedPrice : string[]
+
+
     @ApiProperty()
     @IsString()
     @IsNotEmpty()

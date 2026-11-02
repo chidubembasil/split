@@ -18,12 +18,13 @@ export function CreateCatalogFunction(catalog: UploadService,
         name: z.string(),
         description: z.string(),
         price: z.string(),
+        negotiatedPrice: z.string(),
         quantity: z.number()
     }),
 
 
-    execute: async ({name, description, price, quantity  }) => {
-        const dto = {name: [name], description, price: [price], quantity}
+    execute: async ({name, description, price, negotiatedPrice, quantity  }) => {
+        const dto = {name: [name], description, price: [price], negotiatedPrice: [negotiatedPrice], quantity}
         const data = await catalog.create(dto, files, userId, profileId)
         return `${data}, has been Created Successfully`
     },

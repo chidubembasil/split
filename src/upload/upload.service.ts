@@ -46,6 +46,7 @@ export class UploadService {
           name: dto.name,
           description: dto.description,
           price: dto.price,
+          negotiatedPrice: dto.negotiatedPrice,
           quantity: dto.quantity,
           currency: owner.currency,
           filename: files.map((f) => f.originalname),
@@ -181,6 +182,7 @@ export class UploadService {
       if ((dto as any).name !== undefined) updateData.name = (dto as any).name;
       if ((dto as any).description !== undefined) updateData.description = (dto as any).description;
       if ((dto as any).price !== undefined) updateData.price = (dto as any).price;
+      if ((dto as any).negotiatedPrice !== undefined) updateData.negotiatedPrice = (dto as any).negotiatedPrice;
       if ((dto as any).quantity !== undefined) updateData.quantity = (dto as any).quantity;
 
       return await this.db.upload.update({
