@@ -32,6 +32,14 @@ export class UploadController {
   //   return this.uploadService.findAll();
   // }
 
+  @ApiOperation({ summary: 'Get all uploads of the logged-in user' })
+  @Get()
+  @UseGuards(AuthGuard)
+  findAllByUser(@Req() req: any) {
+    const userId = req.user?.id || req.user?.sub || (req.user as any)?.userId;
+    return this.uploadService.findAllByUser(userId);
+  }
+
   @ApiOperation({ summary: 'Search uploads' })
   @Get('search')
   @UseGuards(AuthGuard)

@@ -76,6 +76,34 @@ export class UploadService {
   //   return `This action returns all upload`;
   // }
 
+  //get every product that belongs to the logged-in user
+  async findAllByUser(userId: string) {
+    if (!userId) {
+      throw new BadRequestException('User not found');
+    }
+
+    try {
+      return await this.db.upload.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          price: true,
+          negotiatedPrice: true,
+          quantity: true,
+          currency: true,
+          fileurl: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(`Failed to fetch products: ${error}`);
+    }
+  }
+
   async findOne(id: string) {
     try {
       const cached = await this.redis.get(id)
