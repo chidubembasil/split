@@ -23,7 +23,7 @@ export class UploadController {
       @Body() createUploadDto: CreateUploadDto,
       @Req() req: any
     ) {
-      const userId = req.user?.id || req.user?.sub || (req.user as any)?.userId;
+      const userId  = req.user?.id || req.user?.sub || (req.user as any)?.userId;
       const profileId = req.user?.profileId || (req.user as any)?.profile?.id;
     return this.uploadService.create(createUploadDto, files, userId, profileId);
   }
