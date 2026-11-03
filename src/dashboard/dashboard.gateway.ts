@@ -4,12 +4,12 @@ import {
   MessageBody,
   ConnectedSocket,
 } from '@nestjs/websockets';
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { UnauthorizedException } from '@nestjs/common';
 import type { Socket } from 'socket.io';
 import { DashboardService } from './dashboard.service.js';
 import { CreateDashboardDto } from './dto/create-dashboard.dto.js';
 import { auth } from '../lib/auth.js';
-import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
+
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 
@@ -22,7 +22,7 @@ export class DashboardGateway {
 
   @ApiOperation({ summary: 'Chat With A Customer Care  Agent' })
   @SubscribeMessage('createDashboard')
-  @UseGuards(AuthGuard)
+
   async create(
     @MessageBody() prompt: CreateDashboardDto,
     @ConnectedSocket() client: Socket,
