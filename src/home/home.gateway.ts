@@ -3,13 +3,9 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   ConnectedSocket,
+  WsException,
 } from '@nestjs/websockets';
-import {
-  UnauthorizedException,
-  UseGuards
-} from '@nestjs/common';
 import type { Socket } from 'socket.io';
-import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
 import { HomeService } from './home.service.js';
 import { CreateDto } from './dto/create_dto.js';
 import { auth } from '../lib/auth.js';
@@ -18,7 +14,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Store')
 @ApiBearerAuth()
-@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: 'http://localhost:5173', credentials: true } })
 export class HomeGateway {
   constructor(
     private readonly homeService: HomeService,
@@ -27,7 +23,6 @@ export class HomeGateway {
 
   @ApiOperation({ summary: 'Chat With Your Personal Agent' })
   @SubscribeMessage('displays_prompt')
-  @UseGuards(AuthGuard)
   async userInput(
     @MessageBody() prompt: CreateDto,
     @ConnectedSocket() client: Socket,
@@ -52,9 +47,7 @@ export class HomeGateway {
     });
 
     if (!session) {
-      throw new UnauthorizedException(
-        'You must be logged in to use this service.',
-      );
+      throw new WsException('You must be logged in to use this service.');
     }
 
     // This is the persistent Better Auth user ID.

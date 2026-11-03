@@ -5,6 +5,7 @@ import { CreateUploadDto } from './dto/create-upload.dto.js';
 import { UpdateUploadDto } from './dto/update-upload.dto.js';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../auth/guards/auth/auth.guard.js';
+import { mediaUploadOptions } from '../cloudinary/media-upload.options.js';
 
 @ApiTags('Upload')
 @ApiBearerAuth()
@@ -16,7 +17,7 @@ export class UploadController {
   @ApiConsumes('multipart/form-data')
   @Post()
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 10))
+  @UseInterceptors(FilesInterceptor('files', 10, mediaUploadOptions))
   create(
       @UploadedFiles() files: Express.Multer.File[],
       @Body() createUploadDto: CreateUploadDto,
@@ -59,7 +60,7 @@ export class UploadController {
   @ApiConsumes('multipart/form-data')
   @Put(':id')
   @UseGuards(AuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 10))
+  @UseInterceptors(FilesInterceptor('files', 10, mediaUploadOptions))
   update(
     @Param('id') id: string, 
     @Body() updateUploadDto: UpdateUploadDto,
